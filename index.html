@@ -23,11 +23,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             text-align: center;
-            animation: fadeIn 1s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            margin-bottom: 20px;
         }
         input, button {
             width: 100%;
@@ -48,16 +44,13 @@
         .logo {
             width: 100px;
             margin-bottom: 20px;
-            animation: bounce 1s infinite alternate;
-        }
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
         }
     </style>
 </head>
 <body>
-    <div class="container" id="register-container">
+
+    <!-- Student Registration Section -->
+    <div class="container">
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo" alt="Student Logo">
         <h2>Student Registration</h2>
         <input type="text" id="reg-name" placeholder="Full Name">
@@ -70,7 +63,8 @@
         <button onclick="register()">Register</button>
     </div>
 
-    <div class="container" id="login-container">
+    <!-- Student Login Section -->
+    <div class="container">
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo" alt="Student Logo">
         <h2>Student Login</h2>
         <input type="text" id="login-username" placeholder="Username">
@@ -78,14 +72,14 @@
         <button onclick="login()">Login</button>
     </div>
 
-    <div class="container" id="admin-login-container">
+    <!-- Admin Login Section -->
+    <div class="container">
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo" alt="Admin Logo">
         <h2>Admin Login</h2>
         <input type="text" id="admin-username" placeholder="Admin Username">
         <input type="password" id="admin-password" placeholder="Password">
         <button onclick="adminLogin()">Login as Admin</button>
     </div>
-    
 
     <script>
         function register() {
@@ -107,32 +101,31 @@
         }
 
         function login() {
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-    const studentData = JSON.parse(localStorage.getItem(username));
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const studentData = JSON.parse(localStorage.getItem(username));
+            
+            if (studentData && studentData.password === password) {
+                localStorage.setItem('loggedInUser', username);
+                window.location.href = `student.html?username=${username}`;
+            } else {
+                alert('Invalid username or password');
+            }
+        }
 
-    if (studentData && studentData.password === password) {
-        localStorage.setItem('loggedInUser', username);
-        window.location.href = `student.html?username=${username}`;
-    } else {
-        alert('Invalid username or password');
-    }
-   
-}
-function adminLogin() {
-    const username = document.getElementById("admin-username").value;
-    const password = document.getElementById("admin-password").value;
+        function adminLogin() {
+            const username = document.getElementById("admin-username").value;
+            const password = document.getElementById("admin-password").value;
 
-    // Set your admin credentials (change these)
-    if (username === "admin" && password === "1234") {
-        localStorage.setItem("adminLoggedIn", "true");
-        window.location.href = "admin.html";
-    } else {
-        alert("Invalid Admin Credentials");
-    }
-}
-
-
+            // Set your admin credentials (Change these to your preferred login details)
+            if (username === "admin" && password === "1234") {
+                localStorage.setItem("adminLoggedIn", "true");
+                window.location.href = "admin.html"; // Redirect to the admin panel
+            } else {
+                alert("Invalid Admin Credentials");
+            }
+        }
     </script>
+
 </body>
 </html>
