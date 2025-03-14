@@ -111,18 +111,31 @@
             }
         }
 
-        function adminLogin() {
-            const username = document.getElementById("admin-username").value;
-            const password = document.getElementById("admin-password").value;
+       // Store multiple admin credentials (Run this only once in the browser console)
+    if (!localStorage.getItem("admins")) {
+        const admins = [
+            { username: "admin1", password: "pass123" },
+            { username: "admin2", password: "admin456" },
+            { username: "principal", password: "school2025" }
+        ];
+        localStorage.setItem("admins", JSON.stringify(admins));
+    }
 
-            // Set your admin credentials (Change these to your preferred login details)
-            if (username === "admin" && password === "1234") {
-                localStorage.setItem("adminLoggedIn", "true");
-                window.location.href = "admin.html"; // Redirect to the admin panel
-            } else {
-                alert("Invalid Admin Credentials");
-            }
+    function adminLogin() {
+        const username = document.getElementById('admin-username').value;
+        const password = document.getElementById('admin-password').value;
+
+        const admins = JSON.parse(localStorage.getItem("admins")) || [];
+        const validAdmin = admins.find(admin => admin.username === username && admin.password === password);
+
+        if (validAdmin) {
+            alert(`Welcome, ${username}! Admin login successful.`);
+            localStorage.setItem("loggedInAdmin", username); // Store the logged-in admin
+            window.location.href = "admin.html"; // Redirect to admin panel
+        } else {
+            alert("Invalid admin credentials!");
         }
+    }
     </script>
 
 </body>
