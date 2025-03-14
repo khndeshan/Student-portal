@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?school,classroom') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .student-list {
+            text-align: left;
+        }
+        .student-list li {
+            padding: 10px;
+            list-style: none;
+            cursor: pointer;
+            background: #f4f4f4;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .student-list li:hover {
+            background: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Panel</h2>
+        <ul id="student-list" class="student-list"></ul>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        function loadStudents() {
+            const studentList = document.getElementById("student-list");
+            studentList.innerHTML = "";
+
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                let studentData = JSON.parse(localStorage.getItem(key));
+
+                if (studentData && studentData.name) {
+                    let listItem = document.createElement("li");
+                    listItem.textContent = studentData.name;
+                    listItem.onclick = function() {
+                        window.location.href = `student.html?username=${key}`;
+                    };
+                    studentList.appendChild(listItem);
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("adminLoggedIn");
+            window.location.href = "index.html";
+        }
+
+        // Ensure only logged-in admin can access
+        if (!localStorage.getItem("adminLoggedIn")) {
+            alert("Unauthorized access!");
+            window.location.href = "index.html";
+        }
+
+        loadStudents();
+    </script>
+</body>
+</html>
