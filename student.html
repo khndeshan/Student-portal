@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?school,classroom') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .student-info {
+            margin: 20px 0;
+        }
+        .student-info img {
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        .student-info h2 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="student-info-container">
+        <div class="student-info">
+            <img id="student-photo" src="" alt="Student Photo" width="150" height="150">
+            <h2 id="student-name">Loading...</h2>
+            <p id="student-phone"></p>
+            <p id="student-address"></p>
+            <p id="student-email"></p>
+        </div>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        function getStudentData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username');
+            const studentData = JSON.parse(localStorage.getItem(username));
+
+            if (studentData) {
+                document.getElementById('student-name').innerText = studentData.name;
+                document.getElementById('student-phone').innerText = `Phone: ${studentData.phone}`;
+                document.getElementById('student-address').innerText = `Address: ${studentData.address}`;
+                document.getElementById('student-email').innerText = `Email: ${studentData.email}`;
+                document.getElementById('student-photo').src = studentData.photo;
+            } else {
+                alert('Student data not found!');
+                window.location.href = 'index.html';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = 'index.html';
+        }
+
+        // Run when page loads
+        window.onload = getStudentData;
+    </script>
+</body>
+</html>

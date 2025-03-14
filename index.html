@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://source.unsplash.com/1600x900/?school,classroom') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            max-width: 400px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #0073e6;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #005bb5;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="register-container">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo" alt="Student Logo">
+        <h2>Student Registration</h2>
+        <input type="text" id="reg-name" placeholder="Full Name">
+        <input type="text" id="reg-phone" placeholder="Phone Number">
+        <input type="text" id="reg-address" placeholder="Address">
+        <input type="email" id="reg-email" placeholder="Email">
+        <input type="file" id="reg-photo">
+        <input type="text" id="reg-username" placeholder="Username">
+        <input type="password" id="reg-password" placeholder="Password">
+        <button onclick="register()">Register</button>
+    </div>
+
+    <div class="container" id="login-container">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="logo" alt="Student Logo">
+        <h2>Student Login</h2>
+        <input type="text" id="login-username" placeholder="Username">
+        <input type="password" id="login-password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <script>
+        function register() {
+            const name = document.getElementById('reg-name').value;
+            const phone = document.getElementById('reg-phone').value;
+            const address = document.getElementById('reg-address').value;
+            const email = document.getElementById('reg-email').value;
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+            const photo = document.getElementById('reg-photo').files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function() {
+                const studentData = { name, phone, address, email, username, password, photo: reader.result };
+                localStorage.setItem(username, JSON.stringify(studentData));
+                alert('Registration successful!');
+            };
+            if (photo) reader.readAsDataURL(photo);
+        }
+
+        function login() {
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    const studentData = JSON.parse(localStorage.getItem(username));
+
+    if (studentData && studentData.password === password) {
+        localStorage.setItem('loggedInUser', username);
+        window.location.href = `student.html?username=${username}`;
+    } else {
+        alert('Invalid username or password');
+    }
+}
+
+    </script>
+</body>
+</html>
